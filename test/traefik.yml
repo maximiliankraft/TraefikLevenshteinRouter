@@ -13,4 +13,4 @@ providers:
 experimental:
   localPlugins:
     levenshteinrouter:
-      moduleName: github.com/traefik-plugins/levenshtein-router
+      moduleName: github.com/maximiliankraft/TraefikLevenshteinRouter

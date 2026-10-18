@@ -1,7 +1,7 @@
 displayName: Levenshtein Router
 summary: Redirect misspelled hostnames to the closest canonical hostname.
 type: middleware
-import: github.com/traefik-plugins/levenshtein-router
+import: github.com/maximiliankraft/TraefikLevenshteinRouter
 testData:
   hosts:
     - foo.localhost

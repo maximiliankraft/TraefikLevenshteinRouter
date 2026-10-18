@@ -5,7 +5,7 @@ services:
       - "18080:80"
       - "18081:8080"
     volumes:
-      - ..:/plugins-local/src/github.com/traefik-plugins/levenshtein-router:ro
+      - ..:/plugins-local/src/github.com/maximiliankraft/TraefikLevenshteinRouter:ro
       - ./traefik.yml:/etc/traefik/traefik.yml:ro
       - ./dynamic.yml:/etc/traefik/dynamic.yml:ro
     depends_on:

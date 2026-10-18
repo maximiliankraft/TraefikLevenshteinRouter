@@ -1,3 +1,3 @@
-module github.com/traefik-plugins/levenshtein-router
+module github.com/maximiliankraft/TraefikLevenshteinRouter
 
 go 1.22

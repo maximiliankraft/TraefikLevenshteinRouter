@@ -2,29 +2,43 @@ name: Test
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
-stages:
-  - test
+permissions:
+  contents: read
 
-levenshtein-router-test:
-  stage: test
-  image: docker:latest
-  services:
-    - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-    DOCKER_TLS_CERTDIR: ""
-    GO_VERSION: "1.22"
-  before_script:
-    - apk add --no-cache go git curl docker-cli-compose
-  script:
-    - docker compose up -d --build
-    - docker compose ps
-    - sleep 1
-    - go test -v ./...
-  after_script:
-    - docker compose logs
-    - docker compose down -v
+jobs:
+  levenshtein-router-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache: true
+
+      - name: Start test stack
+        run: docker compose -f test/compose.yml up -d --build
+
+      - name: Show test stack
+        run: docker compose -f test/compose.yml ps
+
+      - name: Wait for test stack
+        run: sleep 1
+
+      - name: Run Go tests
+        run: go test -v ./...
+
+      - name: Show test stack logs
+        if: ${{ always() }}
+        run: docker compose -f test/compose.yml logs
+
+      - name: Stop test stack
+        if: ${{ always() }}
+        run: docker compose -f test/compose.yml down -v
