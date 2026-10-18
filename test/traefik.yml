@@ -1,0 +1,16 @@
+api:
+  dashboard: true
+
+entryPoints:
+  web:
+    address: ":80"
+
+providers:
+  file:
+    filename: /etc/traefik/dynamic.yml
+    watch: false
+
+experimental:
+  localPlugins:
+    levenshteinrouter:
+      moduleName: github.com/traefik-plugins/levenshtein-router

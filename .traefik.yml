@@ -1,0 +1,10 @@
+displayName: Levenshtein Router
+summary: Redirect misspelled hostnames to the closest canonical hostname.
+type: middleware
+import: github.com/traefik-plugins/levenshtein-router
+testData:
+  hosts:
+    - foo.localhost
+    - bar.localhost
+  maxDistance: 2
+  redirectCode: 308

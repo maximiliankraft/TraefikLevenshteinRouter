@@ -1,0 +1,50 @@
+http:
+  middlewares:
+    levenshtein-router:
+      plugin:
+        levenshteinrouter:
+          hosts:
+            - foo.localhost:18080
+            - bar.localhost:18080
+          maxDistance: 2
+          redirectCode: 308
+
+  routers:
+    foo:
+      entryPoints:
+        - web
+      rule: Host(`foo.localhost`)
+      priority: 100
+      service: foo
+
+    bar:
+      entryPoints:
+        - web
+      rule: Host(`bar.localhost`)
+      priority: 100
+      service: bar
+
+    typo-catcher:
+      entryPoints:
+        - web
+      rule: HostRegexp(`^.+$`)
+      priority: 1
+      middlewares:
+        - levenshtein-router
+      service: fallback
+
+  services:
+    foo:
+      loadBalancer:
+        servers:
+          - url: http://foo:80
+
+    bar:
+      loadBalancer:
+        servers:
+          - url: http://bar:80
+
+    fallback:
+      loadBalancer:
+        servers:
+          - url: http://fallback:80

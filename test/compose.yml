@@ -1,0 +1,29 @@
+services:
+  traefik:
+    image: traefik:v3.3
+    ports:
+      - "18080:80"
+      - "18081:8080"
+    volumes:
+      - ..:/plugins-local/src/github.com/traefik-plugins/levenshtein-router:ro
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./dynamic.yml:/etc/traefik/dynamic.yml:ro
+    depends_on:
+      - foo
+      - bar
+      - fallback
+
+  foo:
+    image: nginx:1.27-alpine
+    volumes:
+      - ./sites/foo:/usr/share/nginx/html:ro
+
+  bar:
+    image: nginx:1.27-alpine
+    volumes:
+      - ./sites/bar:/usr/share/nginx/html:ro
+
+  fallback:
+    image: nginx:1.27-alpine
+    volumes:
+      - ./sites/fallback:/usr/share/nginx/html:ro
